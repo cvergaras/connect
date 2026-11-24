@@ -4,7 +4,7 @@ A small, static academic networking site for Claudio Vergara-Sáez. Its permanen
 
 ## Configuration
 
-Edit [`config.js`](config.js) for public links, email, role, institution, research descriptions and integrations. The settings `tallyFormUrl` and `calendlyUrl` are intentionally blank until their services are ready. Never put API keys, passwords, visitor messages or spreadsheet data in this repository. The public contact email in `config.js` is intentionally displayed on the site.
+Edit [`config.js`](config.js) for public links, email, role, institution, research descriptions and integrations. `tallyFormUrl` points to the published private submission form; `calendlyUrl` is blank until the renamed event is active. Never put API keys, passwords, visitor messages or spreadsheet data in this repository. The public contact email in `config.js` is intentionally displayed on the site.
 
 | Setting | What to enter |
 | --- | --- |
@@ -14,13 +14,13 @@ Edit [`config.js`](config.js) for public links, email, role, institution, resear
 | `research.description`, `research.clarena` | Short public research copy. |
 | `approvedQuestions` | Reviewed, anonymised question-and-answer pairs approved for public display. Never paste a raw Tally submission. |
 
-Until Tally is configured, the form area explains that it is unavailable and provides email contact. Until Calendly is configured, the meeting section offers email contact. Changing an integration URL requires editing only `config.js` and publishing the commit. The QR code always points to the permanent site address, so those integration changes do not affect it.
+The Tally form is published at **https://tally.so/r/e5alZJ** and opens inline from the site. Until Calendly is configured, the meeting section offers email contact. Changing an integration URL requires editing only `config.js` and publishing the commit. The QR code always points to the permanent site address, so those integration changes do not affect it.
 
 ## Set up the private Tally form
 
-Create and publish **one** form in Claudio's own [Tally account](https://tally.so/). Do not create a public results page. Use a simple theme close to the site's off-white background (`#f6f7f3`), dark text (`#193235`) and teal accent (`#245e5b`). Tally's free theme settings support colours and fonts; custom CSS and removal of Tally branding are not needed.
+The form is already published in Claudio's [Tally account](https://tally.so/) as **“Let's connect — Research & Ideas”**. [Edit it here](https://tally.so/forms/e5alZJ/edit). It uses the site's off-white background (`#f6f7f3`), dark text (`#193235`) and teal accent (`#245e5b`). Keep submissions private and do not create a public results page.
 
-Create these blocks in this order. Keep the spelling of the seven category answers exact: the website sends them as URL values.
+The form contains these blocks in order. Keep the spelling of the seven category answers exact: the website sends them as URL values.
 
 | Block | Exact label / values | Requirement |
 | --- | --- | --- |
@@ -35,9 +35,9 @@ Create these blocks in this order. Keep the spelling of the seven category answe
 | Checkbox | `I agree to receive occasional research and CLARENA updates by email.` | Default unchecked. Show for all categories. Require it to be checked when category is Receive CLARENA updates; otherwise leave optional. No updates are sent unless checked. |
 | Single-choice | `May an anonymised version of your question and my answer appear on the website?` | Show only for Ask a question. Required; choices `No` and `Yes`, with `No` as the default. A Yes answer permits review; it does not publish automatically. |
 
-Add conditional logic in Tally for the show/hide and required rules above. Test all seven categories in Tally preview, especially the Email and consent rules. Anonymous questions and feedback must submit with Name, Institution and Email empty. A request for a reply or updates must require Email. Use a short thank-you message without a redirect.
+Conditional logic for the show/hide and required rules above is configured. Check all seven categories after future edits, especially the Email and consent rules. Anonymous questions and feedback must submit with Name, Institution and Email empty. A request for a reply or updates must require Email. The form has a short thank-you message without a redirect.
 
-In the form's **Settings**, enable **Self email notifications** to Claudio's private inbox. In **Integrations**, optionally connect **Google Sheets** using a private Google account and keep the sheet's sharing restricted. Tally's direct Sheets integration creates a row per submission; no Sheet URL or credentials belong in this repository. Review Tally's account access and retention settings yourself.
+**Self email notifications are enabled with Tally's default recipient and content.** The free plan did not allow setting a custom recipient, subject or message, so confirm the Tally account owner receives a test notification. Directing notifications specifically to `claudio.vergarasaez@research.uwa.edu.au` requires [Tally Pro](https://tally.so/pricing?source=ai) or an account-level email arrangement. The form remains accessible in Tally's private Submissions view regardless of email delivery. In **Integrations**, optionally connect **Google Sheets** using a private Google account and keep the sheet's sharing restricted. No Sheet URL or credentials belong in this repository. Review Tally's account access and retention settings yourself.
 
 ## Public Q&A moderation
 
@@ -51,7 +51,7 @@ approvedQuestions: [
 
 Commit and push the change; GitHub Pages will update the section. Do not publish a question when its submitter chose No, and do not automatically sync Tally or Google Sheets rows to the public site. The empty state remains until the first approved pair is added. To withdraw a pair, remove its object from `approvedQuestions` and publish a new commit; remember that public Git history retains earlier versions, so obtain consent before initial publication and do not include personal details.
 
-Copy the published share link from Tally's **Share** tab into `config.js` as `tallyFormUrl`. The site converts the `/r/FORM_ID` link into a standard inline `/embed/FORM_ID` iframe, passes `category` in the query string and offers a direct Tally link if the iframe does not display. The Tally embed widget handles responsive height. Do not paste an unverified form ID.
+The published share link is in `config.js` as `tallyFormUrl`. The site converts the `/r/FORM_ID` link into a standard inline `/embed/FORM_ID` iframe, passes `category` in the query string and offers a direct Tally link if the iframe does not display. The Tally embed widget handles responsive height.
 
 References: [Tally hidden fields](https://tally.so/help/hidden-fields), [pre-population](https://tally.so/help/pre-populate-form-fields), [conditional logic](https://tally.so/help/conditional-form-logic), [standard embeds](https://developers.tally.so/widgets/embeds), [owner notifications](https://tally.so/help/self-email-notifications), and [Google Sheets](https://tally.so/help/google-sheets-integration).
 
@@ -78,4 +78,4 @@ For ongoing maintenance, edit `config.js`, check the site locally with `python3 
 - With a real Tally URL, choose each site button and confirm the form opens inline with the matching category selected. Test anonymous feedback, a reply request, CLARENA testing interest and an explicit updates opt-in; confirm private receipt in Tally and email, and remove test submissions.
 - Decode both QR files to confirm the exact permanent URL. Print a test copy before using them on physical material.
 
-The live Tally submission workflow and Calendly booking cannot be verified until Claudio completes those account settings.
+The live Tally form and all seven conditional category layouts were verified in Chrome. An automated anonymous test did not reach Tally's thank-you page or create a submission, so complete one manual test from a normal browser and confirm it appears in Tally's private Submissions view and that the account owner receives a notification. Calendly booking remains unavailable until Claudio activates the renamed event and updates its URL.
