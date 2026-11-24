@@ -33,6 +33,23 @@
   setText("footer-role", config.role);
   setText("footer-institution", config.institution);
   setText("year", new Date().getFullYear().toString());
+  const approvedQuestions = Array.isArray(config.approvedQuestions) ? config.approvedQuestions : [];
+  if (approvedQuestions.length) {
+    const list = $("qa-list");
+    list.replaceChildren();
+    approvedQuestions.forEach(item => {
+      if (typeof item.question !== "string" || typeof item.answer !== "string" || !item.question.trim() || !item.answer.trim()) return;
+      const article = document.createElement("article");
+      article.className = "qa-item";
+      const heading = document.createElement("h3");
+      heading.textContent = item.question;
+      const answer = document.createElement("p");
+      answer.textContent = item.answer;
+      article.append(heading, answer);
+      list.append(article);
+    });
+    if (!list.childElementCount) list.innerHTML = '<p class="qa-empty">No questions have been published yet.</p>';
+  }
   if (validPublicUrl(config.clarenaUrl)) {
     $("clarena-link").href = config.clarenaUrl;
     $("footer-clarena-link").href = config.clarenaUrl;
@@ -67,7 +84,7 @@
   function showForm(category) {
     const selected = categories.includes(category) ? category : "";
     setText("form-category", selected || "Choose a topic above");
-    document.querySelectorAll("[data-category]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.category === selected)));
+    document.querySelectorAll(".topic[data-category]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.category === selected)));
     if (!tallyId) return;
     const content = $("form-content");
     content.replaceChildren();

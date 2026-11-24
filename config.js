@@ -13,6 +13,9 @@ window.CONNECT_CONFIG = Object.freeze({
     description: "My work examines how lakes and surrounding aquifers exchange water, heat and solutes, and how those interactions shape water quality over time.",
     clarena: "CLARENA is a Python framework that couples MODFLOW 6 with the General Lake Model to explore these interactions."
   },
+  // Publish only questions whose submitter opted in and whose wording and answer
+  // you have personally reviewed. Never copy names, email addresses, or raw submissions.
+  approvedQuestions: [],
   // Paste the published Tally share URL, such as https://tally.so/r/ABC123.
   tallyFormUrl: "",
   // Set this only after the renamed event is active and its URL is final.

@@ -1,6 +1,6 @@
 # Let's connect
 
-A small, static academic networking site for Claudio Vergara-Sáez. Its permanent address is **https://cvergaras.github.io/connect/**. The public repository contains site files and QR assets only. Visitor submissions belong in Claudio's private Tally account, and optionally in a private Google Sheet.
+A small, static academic networking site for Claudio Vergara-Sáez. Its permanent address is **https://cvergaras.github.io/connect/**. Visitor submissions belong in Claudio's private Tally account, and optionally in a private Google Sheet. Only questions and answers explicitly approved for publication are copied into this public repository.
 
 ## Configuration
 
@@ -12,6 +12,7 @@ Edit [`config.js`](config.js) for public links, email, role, institution, resear
 | `calendlyUrl` | The active, renamed “Let's Connect – Research & Ideas” event URL. Do not use the inactive old URL. |
 | `email`, `linkedinUrl`, `clarenaUrl` | Public contact and research links. The CLARENA link currently points to a public UWA research page because its GitHub repository does not open for unauthenticated visitors. Replace it if the framework repository becomes public. |
 | `research.description`, `research.clarena` | Short public research copy. |
+| `approvedQuestions` | Reviewed, anonymised question-and-answer pairs approved for public display. Never paste a raw Tally submission. |
 
 Until Tally is configured, the form area explains that it is unavailable and provides email contact. Until Calendly is configured, the meeting section offers email contact. Changing an integration URL requires editing only `config.js` and publishing the commit. The QR code always points to the permanent site address, so those integration changes do not affect it.
 
@@ -32,10 +33,23 @@ Create these blocks in this order. Keep the spelling of the seven category answe
 | Single-choice | `Would you like a reply?` | Required for categories other than Receive CLARENA updates; choices `No` and `Yes`, with no preselected answer. |
 | Email | `Email` | Show when reply is Yes, category is Register interest in testing CLARENA, category is Receive CLARENA updates, or updates consent is checked. Require when reply is Yes, category is Receive CLARENA updates, or updates consent is checked. It may remain optional for testing interest without a reply request. |
 | Checkbox | `I agree to receive occasional research and CLARENA updates by email.` | Default unchecked. Show for all categories. Require it to be checked when category is Receive CLARENA updates; otherwise leave optional. No updates are sent unless checked. |
+| Single-choice | `May an anonymised version of your question and my answer appear on the website?` | Show only for Ask a question. Required; choices `No` and `Yes`, with `No` as the default. A Yes answer permits review; it does not publish automatically. |
 
 Add conditional logic in Tally for the show/hide and required rules above. Test all seven categories in Tally preview, especially the Email and consent rules. Anonymous questions and feedback must submit with Name, Institution and Email empty. A request for a reply or updates must require Email. Use a short thank-you message without a redirect.
 
 In the form's **Settings**, enable **Self email notifications** to Claudio's private inbox. In **Integrations**, optionally connect **Google Sheets** using a private Google account and keep the sheet's sharing restricted. Tally's direct Sheets integration creates a row per submission; no Sheet URL or credentials belong in this repository. Review Tally's account access and retention settings yourself.
+
+## Public Q&A moderation
+
+The public Q&A is intentionally separate from Tally's private response inbox. To publish a question, first confirm that its submitter selected **Yes** to the public-question choice. Review the wording, remove names, institutions, email addresses, links to private material and identifying details, then write your own answer. Add only the approved public text to `approvedQuestions` in `config.js`, for example:
+
+```js
+approvedQuestions: [
+  { question: "How does CLARENA couple a lake and aquifer?", answer: "A reviewed answer written by Claudio." }
+],
+```
+
+Commit and push the change; GitHub Pages will update the section. Do not publish a question when its submitter chose No, and do not automatically sync Tally or Google Sheets rows to the public site. The empty state remains until the first approved pair is added. To withdraw a pair, remove its object from `approvedQuestions` and publish a new commit; remember that public Git history retains earlier versions, so obtain consent before initial publication and do not include personal details.
 
 Copy the published share link from Tally's **Share** tab into `config.js` as `tallyFormUrl`. The site converts the `/r/FORM_ID` link into a standard inline `/embed/FORM_ID` iframe, passes `category` in the query string and offers a direct Tally link if the iframe does not display. The Tally embed widget handles responsive height. Do not paste an unverified form ID.
 
