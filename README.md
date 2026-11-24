@@ -16,32 +16,19 @@ Edit [`config.js`](config.js) for public links, email, role, institution, resear
 
 The Tally form is published at **https://tally.so/r/e5alZJ** and opens inline from the site. Until Calendly is configured, the meeting section offers email contact. Changing an integration URL requires editing only `config.js` and publishing the commit. The QR code always points to the permanent site address, so those integration changes do not affect it.
 
-## Set up the private Tally form
+## Private Tally form
 
-The form is already published in Claudio's [Tally account](https://tally.so/) as **“Let's connect — Research & Ideas”**. [Edit it here](https://tally.so/forms/e5alZJ/edit). It uses the site's off-white background (`#f6f7f3`), dark text (`#193235`) and teal accent (`#245e5b`). Keep submissions private and do not create a public results page.
+The form is published in Claudio's [Tally account](https://tally.so/) as **“Let's connect — Research & Ideas”**. [Edit it here](https://tally.so/forms/e5alZJ/edit). It uses the site's off-white background (`#f6f7f3`), dark text (`#193235`) and teal accent (`#245e5b`). Keep submissions private and do not create a public results page.
 
-The form contains these blocks in order. Keep the spelling of the seven category answers exact: the website sends them as URL values.
+The form has only four visible fields, in this order: **Name** (optional), **Institution** (optional), **Email** (optional), and **Message** (required). This allows anonymous messages. A hidden `category` field records which website topic button the visitor clicked; it is blank when someone opens Tally directly. There are no visible topic, reply, update or public Q&A consent questions. The thank-you page confirms private receipt.
 
-| Block | Exact label / values | Requirement |
-| --- | --- | --- |
-| Hidden field | `category` | Receives the website button choice from the URL. Case-sensitive. |
-| Single-choice | `What would you like to share?` | Required; set its **default answer** from hidden field `category`. Options: `Ask a question`; `Share feedback`; `Exchange research ideas`; `Propose a collaboration`; `Register interest in testing CLARENA`; `Receive CLARENA updates`; `Other enquiries`. A visitor may change the choice. |
-| Long text | `Your message` | Show and require for Ask a question, Share feedback, Exchange research ideas, Propose a collaboration and Other enquiries. |
-| Long text | `How might you use CLARENA?` | Show only for Register interest in testing CLARENA; optional. |
-| Short text | `Name` | Optional. |
-| Short text | `Institution or organisation` | Optional. |
-| Single-choice | `Would you like a reply?` | Required for categories other than Receive CLARENA updates; choices `No` and `Yes`, with no preselected answer. |
-| Email | `Email` | Show when reply is Yes, category is Register interest in testing CLARENA, category is Receive CLARENA updates, or updates consent is checked. Require when reply is Yes, category is Receive CLARENA updates, or updates consent is checked. It may remain optional for testing interest without a reply request. |
-| Checkbox | `I agree to receive occasional research and CLARENA updates by email.` | Default unchecked. Show for all categories. Require it to be checked when category is Receive CLARENA updates; otherwise leave optional. No updates are sent unless checked. |
-| Single-choice | `May an anonymised version of your question and my answer appear on the website?` | Show only for Ask a question. Required; choices `No` and `Yes`, with `No` as the default. A Yes answer permits review; it does not publish automatically. |
-
-Conditional logic for the show/hide and required rules above is configured. Check all seven categories after future edits, especially the Email and consent rules. Anonymous questions and feedback must submit with Name, Institution and Email empty. A request for a reply or updates must require Email. The form has a short thank-you message without a redirect.
+An email address is needed to reply, follow up about CLARENA testing, provide requested updates, or obtain permission to publish a question. Treat only an explicit request for updates as an opt-in; an email address entered for another topic is not consent to updates. If the visitor gives no email, keep their question private. Never publish a submission or answer without explicit permission obtained separately and Claudio's review.
 
 **Self email notifications are enabled with Tally's default recipient and content.** The free plan did not allow setting a custom recipient, subject or message, so confirm the Tally account owner receives a test notification. Directing notifications specifically to `claudio.vergarasaez@research.uwa.edu.au` requires [Tally Pro](https://tally.so/pricing?source=ai) or an account-level email arrangement. The form remains accessible in Tally's private Submissions view regardless of email delivery. In **Integrations**, optionally connect **Google Sheets** using a private Google account and keep the sheet's sharing restricted. No Sheet URL or credentials belong in this repository. Review Tally's account access and retention settings yourself.
 
 ## Public Q&A moderation
 
-The public Q&A is intentionally separate from Tally's private response inbox. To publish a question, first confirm that its submitter selected **Yes** to the public-question choice. Review the wording, remove names, institutions, email addresses, links to private material and identifying details, then write your own answer. Add only the approved public text to `approvedQuestions` in `config.js`, for example:
+The public Q&A is intentionally separate from Tally's private response inbox. The simplified form has no publication consent field. To publish a question, obtain the submitter's explicit permission through a separate reply, then review the wording, remove names, institutions, email addresses, links to private material and identifying details, and write your own answer. Add only the approved public text to `approvedQuestions` in `config.js`, for example:
 
 ```js
 approvedQuestions: [
@@ -49,11 +36,11 @@ approvedQuestions: [
 ],
 ```
 
-Commit and push the change; GitHub Pages will update the section. Do not publish a question when its submitter chose No, and do not automatically sync Tally or Google Sheets rows to the public site. The empty state remains until the first approved pair is added. To withdraw a pair, remove its object from `approvedQuestions` and publish a new commit; remember that public Git history retains earlier versions, so obtain consent before initial publication and do not include personal details.
+Commit and push the change; GitHub Pages will update the section. Do not automatically sync Tally, Notion or Google Sheets rows to the public site. The empty state remains until the first approved pair is added. To withdraw a pair, remove its object from `approvedQuestions` and publish a new commit; remember that public Git history retains earlier versions, so obtain consent before initial publication and do not include personal details.
 
 The published share link is in `config.js` as `tallyFormUrl`. The site converts the `/r/FORM_ID` link into a standard inline `/embed/FORM_ID` iframe, passes `category` in the query string and offers a direct Tally link if the iframe does not display. The Tally embed widget handles responsive height.
 
-References: [Tally hidden fields](https://tally.so/help/hidden-fields), [pre-population](https://tally.so/help/pre-populate-form-fields), [conditional logic](https://tally.so/help/conditional-form-logic), [standard embeds](https://developers.tally.so/widgets/embeds), [owner notifications](https://tally.so/help/self-email-notifications), and [Google Sheets](https://tally.so/help/google-sheets-integration).
+References: [Tally hidden fields](https://tally.so/help/hidden-fields), [standard embeds](https://developers.tally.so/widgets/embeds), [owner notifications](https://tally.so/help/self-email-notifications), and [Notion integration](https://tally.so/help/notion-integration).
 
 ## Calendly
 
@@ -75,7 +62,7 @@ For ongoing maintenance, edit `config.js`, check the site locally with `python3 
 
 - Check 320 px mobile, tablet and desktop widths; keyboard focus; skip link; headings; readable contrast; and reduced-motion behaviour.
 - Check LinkedIn, email, CLARENA research and Calendly links. A blank Calendly URL must keep the meeting email option visible.
-- With a real Tally URL, choose each site button and confirm the form opens inline with the matching category selected. Test anonymous feedback, a reply request, CLARENA testing interest and an explicit updates opt-in; confirm private receipt in Tally and email, and remove test submissions.
+- Choose each site topic button and confirm the form opens inline with exactly four visible fields. Test anonymous submission and a submission with contact details; confirm private receipt in Tally and the owner email, and remove test submissions.
 - Decode both QR files to confirm the exact permanent URL. Print a test copy before using them on physical material.
 
-The live Tally form and all seven conditional category layouts were verified in Chrome. An automated anonymous test did not reach Tally's thank-you page or create a submission, so complete one manual test from a normal browser and confirm it appears in Tally's private Submissions view and that the account owner receives a notification. Calendly booking remains unavailable until Claudio activates the renamed event and updates its URL.
+The previous form layout was verified in Chrome, and Claudio made a completed manual test submission. After any form restructuring, repeat the visual check in a normal browser. Calendly booking remains unavailable until Claudio activates the renamed event and updates its URL.
